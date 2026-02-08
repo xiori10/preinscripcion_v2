@@ -1,0 +1,20 @@
+# Archivos de texto
+* text=auto
+
+# Archivos de JavaScript y JSX
+*.js text eol=lf
+*.jsx text eol=lf
+
+# Archivos de CSS
+*.css text eol=lf
+
+# Archivos HTML
+*.html text eol=lf
+
+# JSON
+*.json text eol=lf
+
+# Otros archivos de configuración
+*.md text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
