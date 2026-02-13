@@ -1,0 +1,33 @@
+
+
+.sidebar {
+  transition: width 0.3s ease;
+  height: 100vh;
+}
+
+.sidebar-open {
+  width: 250px;
+}
+
+.sidebar-closed {
+  width: 70px;
+  overflow: hidden;
+}
+
+.nav-link {
+  cursor: pointer;
+}
+
+.nav-link.active {
+  font-weight: 500;
+}
+
+.color1 {
+  color: #f08b18;
+  font-size: 25px;
+}
+.sub1 {
+  font-size: 30px;
+  color: red;
+}
+

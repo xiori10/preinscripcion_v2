@@ -6,7 +6,9 @@ import {
   Settings,
   ChevronLeft,
   ChevronRight
+  
 } from 'lucide-react'
+// import './sidebar.css'
 
 const Sidebar = ({ isOpen, onToggle }) => {
   const menuItems = [
@@ -19,54 +21,45 @@ const Sidebar = ({ isOpen, onToggle }) => {
   return (
     <aside
       className={`
-        bg-white border-r border-gray-200 h-full
-        transition-all duration-300
-        ${isOpen ? 'w-64' : 'w-20'}
-        hidden lg:flex flex-col
+        sidebar bg-white border-end d-none d-lg-flex flex-column
+        ${isOpen ? 'sidebar-open' : 'sidebar-closed'}
       `}
     >
-      {/* Logo / Título */}
-      <div className="flex items-center justify-between px-4 py-4 border-b border-gray-200">
+      {/* Header */}
+      <div className="d-flex align-items-center justify-content-between px-3 py-3 border-bottom">
         {isOpen && (
-          <h1 className="text-lg font-bold text-blue-600">
+          <h1 className="fw-bold  m-0 color1">
             Admin Panel
           </h1>
         )}
 
         <button
           onClick={onToggle}
-          className="p-2 rounded-lg hover:bg-gray-100"
+          className="btn btn-sm btn-light"
         >
           {isOpen ? <ChevronLeft size={20} /> : <ChevronRight size={20} />}
         </button>
       </div>
 
-      {/* Menú */}
-      <nav className="flex-1 px-3 py-4 space-y-1">
+      {/* Menu */}
+      <nav className="flex-grow-1 px-2 py-3 ">
         {menuItems.map(({ name, icon: Icon, path }) => (
           <NavLink
             key={name}
             to={path}
             className={({ isActive }) =>
-              `
-              flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium
-              transition-colors
-              ${
-                isActive
-                  ? 'bg-blue-100 text-blue-600'
-                  : 'text-gray-600 hover:bg-gray-100'
-              }
-              `
+              `nav-link d-flex align-items-center gap-2 px-3 py-2 rounded mb-1
+              ${isActive ? 'active bg-primary-subtle text-primary' : 'text-secondary'}`
             }
           >
-            <Icon className="w-5 h-5" />
+            <Icon size={18} />
             {isOpen && <span>{name}</span>}
           </NavLink>
         ))}
       </nav>
 
-      {/* Footer del Sidebar */}
-      <div className="px-4 py-3 border-t border-gray-200 text-xs text-gray-500">
+      {/* Footer */}
+      <div className="px-3 py-2 border-top text-muted small">
         {isOpen && '© 2026 Chappi Admin'}
       </div>
     </aside>

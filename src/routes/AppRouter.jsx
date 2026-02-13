@@ -12,8 +12,7 @@ const AppRouter = () => (
     {/* 🌐 PÚBLICO */}
     <Route path="/*" element={<PostulanteRoutes />} />
 
-    {/* 404 */}
-    <Route path="*" element={<Navigate to="/" replace />} />
+   
 
   </Routes>
 )
