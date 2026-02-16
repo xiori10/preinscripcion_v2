@@ -1,8 +1,11 @@
 import { Outlet } from 'react-router-dom';
+// import '@/postulante/styles/postulante.css';
 import Footer from '@/postulante/components/Footer';
 
+
+
 // import 'bootstrap/dist/css/bootstrap.min.css' 
-import'../styles/postulante.css'
+// import'../styles/postulante.css'
 
 
 const PublicLayout = () => {

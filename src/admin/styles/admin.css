@@ -1,4 +1,48 @@
+/* Esto asegura que el cambio de colores sea suave en toda la app */
+body {
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
 
+/* Ajuste para el buscador en modo oscuro si sigue viéndose mal */
+[data-coreui-theme='dark'] .form-control {
+  background-color: var(--cui-body-bg-tertiary);
+  color: var(--cui-body-color);
+}
+
+.hover-card {
+  transition: all 0.25s ease;
+}
+
+.hover-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--cui-box-shadow-lg);
+}
+
+.centro {
+  text-align: center;
+  color:red;
+}
+
+[data-bs-theme="light"] .card-title {
+  color: #212529; /* negro */
+}
+
+[data-bs-theme="dark"] .card-title {
+  color: #f50808 !important;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+/* 
 
 .sidebar {
   transition: width 0.3s ease;
@@ -29,5 +73,5 @@
 .sub1 {
   font-size: 30px;
   color: red;
-}
+} */
 

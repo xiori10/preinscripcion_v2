@@ -1,68 +1,86 @@
-import { NavLink } from 'react-router-dom'
+import React from 'react'
 import {
-  LayoutDashboard,
-  Users,
-  FileText,
-  Settings,
-  ChevronLeft,
-  ChevronRight
-  
-} from 'lucide-react'
-// import './sidebar.css'
+  CSidebar,
+  CSidebarBrand,
+  CSidebarNav,
+  CNavItem,
+  CNavTitle,
+  CNavLink,
+  CSidebarHeader,
+  CSidebarToggler
+} from '@coreui/react'
+import { cilSpeedometer, cilList, cilChart, cilUser, cilSchool } from '@coreui/icons'
+import CIcon from '@coreui/icons-react'
+import { NavLink } from 'react-router-dom'
 
-const Sidebar = ({ isOpen, onToggle }) => {
-  const menuItems = [
-    { name: 'Dashboard', icon: LayoutDashboard, path: '/admin' },
-    { name: 'Usuarios', icon: Users, path: '/admin/usuarios' },
-    { name: 'Reportes', icon: FileText, path: '/admin/reportes' },
-    { name: 'Configuración', icon: Settings, path: '/configuracion' },
-  ]
-
+const Sidebar = ({ visible, setVisible }) => {
   return (
-    <aside
-      className={`
-        sidebar bg-white border-end d-none d-lg-flex flex-column
-        ${isOpen ? 'sidebar-open' : 'sidebar-closed'}
-      `}
+    <CSidebar
+      position="fixed"
+      visible={visible}
+      onVisibleChange={setVisible}
+      className="border-end shadow-sm"
     >
-      {/* Header */}
-      <div className="d-flex align-items-center justify-content-between px-3 py-3 border-bottom">
-        {isOpen && (
-          <h1 className="fw-bold  m-0 color1">
-            Admin Panel
-          </h1>
-        )}
-
-        <button
-          onClick={onToggle}
-          className="btn btn-sm btn-light"
-        >
-          {isOpen ? <ChevronLeft size={20} /> : <ChevronRight size={20} />}
-        </button>
-      </div>
-
-      {/* Menu */}
-      <nav className="flex-grow-1 px-2 py-3 ">
-        {menuItems.map(({ name, icon: Icon, path }) => (
-          <NavLink
-            key={name}
-            to={path}
-            className={({ isActive }) =>
-              `nav-link d-flex align-items-center gap-2 px-3 py-2 rounded mb-1
-              ${isActive ? 'active bg-primary-subtle text-primary' : 'text-secondary'}`
-            }
+      <CSidebarHeader className="border-bottom p-4">
+        <CSidebarBrand className="d-flex align-items-center text-decoration-none">
+          <div 
+            className="bg-primary d-flex align-items-center justify-content-center rounded-3 me-3 shadow"
+            style={{ width: '40px', height: '40px' }}
           >
-            <Icon size={18} />
-            {isOpen && <span>{name}</span>}
-          </NavLink>
-        ))}
-      </nav>
+            <CIcon icon={cilSchool} className="text-white" size="lg" />
+          </div>
+          <div className="d-flex flex-column text-start">
+            <span className="fw-bold fs-5 lh-1 text-body">ADMISION</span>
+            <small className="text-muted fw-semibold" style={{ fontSize: '0.7rem', letterSpacing: '1px' }}>
+              PORTAL ADMIN
+            </small>
+          </div>
+        </CSidebarBrand>
+      </CSidebarHeader>
 
-      {/* Footer */}
-      <div className="px-3 py-2 border-top text-muted small">
-        {isOpen && '© 2026 Chappi Admin'}
-      </div>
-    </aside>
+      <CSidebarNav className="p-2 fs-6 fw-semibold">
+        <CNavTitle className="fw-bold text-uppercase mt-3 mb-2 px-3" style={{ fontSize: '0.85rem', opacity: 2.5 }}>
+          General
+        </CNavTitle>
+
+        <CNavItem>
+          <CNavLink as={NavLink} to="/admin" className="rounded-3 py-2 px-3 mb-1">
+            <CIcon icon={cilSpeedometer} className="nav-icon text-primary" />
+            Dashboard
+          </CNavLink>
+        </CNavItem>
+
+        <CNavTitle className="fw-bold text-uppercase mt-4 mb-2 px-3" style={{ fontSize: '0.85rem', opacity: 2.5 }}>
+          Gestión de Procesos
+        </CNavTitle>
+
+        <CNavItem>
+          <CNavLink as={NavLink} to="/admin/preinscripciones" className="rounded-3 py-2 px-3 mb-1">
+            <CIcon icon={cilList} className="nav-icon text-warning" />
+            Preinscripciones
+          </CNavLink>
+        </CNavItem>
+
+        <CNavItem>
+          <CNavLink as={NavLink} to="/admin/reportes" className="rounded-3 py-2 px-3 mb-1">
+            <CIcon icon={cilChart} className="nav-icon text-info" />
+            Reportes Estadísticos
+          </CNavLink>
+        </CNavItem>
+
+        <CNavItem>
+          <CNavLink as={NavLink} to="/admin/usuarios" className="rounded-3 py-2 px-3 mb-1">
+            <CIcon icon={cilUser} className="nav-icon text-danger" />
+            Usuarios y Roles
+          </CNavLink>
+        </CNavItem>
+      </CSidebarNav>
+      
+      <CSidebarToggler 
+        className="d-none d-lg-flex border-top" 
+        onClick={() => setVisible(!visible)} 
+      />
+    </CSidebar>
   )
 }
 

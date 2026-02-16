@@ -387,6 +387,7 @@ const handleChange = (e) => {
           departamento_residencia: codDepRes,
           provincia_residencia: codDepRes + codProvRes,
           distrito_residencia: codDepRes + codProvRes + codDistRes,
+          ubigeo_residencia: codDepRes + codProvRes + codDistRes,
         };
 
         await modificarPreinscripcion(

@@ -1,32 +1,48 @@
+import React, { useState } from 'react'
+import { CContainer } from '@coreui/react'
 import { Outlet } from 'react-router-dom'
-import { useState } from 'react'
 import Sidebar from './Sidebar'
 import Header from './Header'
-import Footer from './Footer'
-import '../styles/admin.css'
+import { ThemeProvider } from '../../context/ThemeContext'
+// import '@/admin/styles/admin.css';
 
 const AdminLayout = () => {
-  const [sidebarOpen, setSidebarOpen] = useState(true)
+  const [sidebarVisible, setSidebarVisible] = useState(true)
 
   return (
-    <div className="d-flex vh-100">
-      {/* Sidebar */}
+
+    <ThemeProvider>  
+    {/* // Agregamos bg-body para que el fondo gris/oscuro se aplique a toda la ventana */}
+    <div className="bg-body">
       <Sidebar
-        isOpen={sidebarOpen}
-        onToggle={() => setSidebarOpen(!sidebarOpen)}
+        visible={sidebarVisible}
+        setVisible={setSidebarVisible}
       />
 
-      {/* Main content */}
-      <div className="flex-grow-1 d-flex flex-column overflow-hidden">
-        <Header onMenuClick={() => setSidebarOpen(!sidebarOpen)} />
+      <div
+        className="wrapper d-flex flex-column min-vh-100"
+        style={{
+          // Tip: CoreUI Sidebar suele manejar su propio overlay, 
+          // pero si usas margen manual, asegúrate de que sea fluido
+          marginLeft: sidebarVisible ? '256px' : '0px',
+          transition: 'margin-left 0.15s ease-in-out',
+          backgroundColor: 'transparent' // Deja que bg-body mande
+        }}
+      >
+        <Header
+          sidebarVisible={sidebarVisible}
+          setSidebarVisible={setSidebarVisible}
+        />
 
-        <main className="flex-grow-1 overflow-auto bg-light p-4">
-          <Outlet />
-        </main>
-
-        <Footer />
+        {/* CAMBIO CLAVE: Quitamos 'bg-light' y usamos 'bg-transparent' o nada */}
+        <div className="body flex-grow-1 px-3 py-4">
+          <CContainer fluid>
+            <Outlet />
+          </CContainer>
+        </div>
       </div>
     </div>
+    </ThemeProvider>
   )
 }
 

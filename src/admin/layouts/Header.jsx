@@ -1,100 +1,269 @@
-import { Menu, Bell, User, LogOut, Settings } from 'lucide-react'
-import { useState, useRef, useEffect } from 'react'
-// import { useAuth } from '../../hooks/useAuth'
-import { useAuth } from '@/hooks/useAuth'
-import { getInitials } from '@/utils/helpers'
+import React, { useEffect, useState } from "react";
+import {
+  CHeader,
+  CHeaderBrand,
+  CHeaderNav,
+  CHeaderToggler,
+  CDropdown,
+  CDropdownToggle,
+  CDropdownMenu,
+  CDropdownItem,
+  CAvatar,
+  CBadge,
+  CNavItem,
+  CNavLink,
+  CFormInput,
+  CButton,
+  CContainer,
+  CDropdownDivider,
+} from "@coreui/react";
 
-import { useNavigate } from 'react-router-dom'
+import {
+  cilBell,
+  cilMenu,
+  cilSearch,
+  cilMoon,
+  cilSun,
+  cilContrast,
+  cilSettings,
+  cilAccountLogout,
+  cilUser,
+} from "@coreui/icons";
 
-const Header = ({ onMenuClick }) => {
-  const { user, logout } = useAuth()
-  const navigate = useNavigate()
-  const [dropdownOpen, setDropdownOpen] = useState(false)
-  const dropdownRef = useRef(null)
+import CIcon from "@coreui/icons-react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/hooks/useAuth";
+import { useTheme } from "@/hooks/useTheme";
+import api from "@/services/api";
 
+const Header = ({ sidebarVisible, setSidebarVisible }) => {
+  const navigate = useNavigate();
+  const { logout, user } = useAuth();
+  const { theme, setTheme } = useTheme();
+
+  const [pendientes, setPendientes] = useState(0);
+  const [currentTime, setCurrentTime] = useState(new Date());
+
+  // 🔹 Reloj en vivo optimizado
   useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        setDropdownOpen(false)
-      }
-    }
+    const interval = setInterval(() => setCurrentTime(new Date()), 1000);
+    return () => clearInterval(interval);
+  }, []);
 
-    document.addEventListener('mousedown', handleClickOutside)
-    return () => document.removeEventListener('mousedown', handleClickOutside)
-  }, [])
+  // 🔹 Notificaciones (Corrección de 'error' no usado)
+  useEffect(() => {
+    const fetchPendientes = async () => {
+      try {
+        const { data } = await api.get("/admin/dashboard");
+        setPendientes(data.pendientes || 0);
+      } catch (error) {
+        console.error(error);
+        // Usamos '_' para indicar que el error no se necesita
+        console.warn("No se pudieron cargar las notificaciones");
+      }
+    };
+    fetchPendientes();
+  }, []);
+
+  const formattedDateTime = currentTime.toLocaleString("es-PE", {
+    weekday: "short", // Más corto para no saturar el header
+    day: "numeric",
+    month: "short",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+  });
 
   const handleLogout = () => {
-    logout()
-    navigate('/login')
-  }
+    logout();
+    navigate("/admin/login");
+  };
 
   return (
-    <header className="bg-white border-b border-gray-200 px-6 py-4">
-      <div className="flex items-center justify-between">
-        <button
-          onClick={onMenuClick}
-          className="p-2 rounded-lg hover:bg-gray-100 lg:hidden"
-        >
-          <Menu className="w-6 h-6" />
-        </button>
+    // <CHeader
+    //   position="sticky"
+    //   className="mb-2 p-4 border-bottom shadow-sm bg-body"
+    // >
+    <CHeader
+      position="sticky"
+      className="mb-4 border-bottom shadow-sm bg-body"
+      style={{
+        "--cui-header-padding-y": "1.2rem",
+        "--cui-header-padding-x": "1.2rem",
+      }}
+    >
+      <CContainer fluid className="px-5 d-flex align-items-center">
+        {/* IZQUIERDA: Toggle y Breadcrumb/Título */}
+        <div className="d-flex align-items-center flex-grow-1">
+          <CHeaderToggler
+            className="ps-1"
+            onClick={() => setSidebarVisible(!sidebarVisible)}
+          >
+            <CIcon icon={cilMenu} size="lg" />
+          </CHeaderToggler>
 
-        <div className="flex-1"></div>
-
-        <div className="flex items-center gap-4">
-          <button className="relative p-2 rounded-lg hover:bg-gray-100 transition-colors">
-            <Bell className="w-5 h-5 text-gray-600" />
-            <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
-          </button>
-
-          <div className="relative" ref={dropdownRef}>
-            <button
-              onClick={() => setDropdownOpen(!dropdownOpen)}
-              className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-100 transition-colors"
-            >
-              <div className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-white text-sm font-medium">
-                {getInitials(user?.name)}
-              </div>
-              <div className="text-left hidden md:block">
-                <p className="text-sm font-medium text-gray-900">{user?.name}</p>
-                <p className="text-xs text-gray-500">{user?.email}</p>
-              </div>
-            </button>
-
-            {dropdownOpen && (
-              <div className="absolute right-0 mt-2 w-56 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-50">
-                <div className="px-4 py-2 border-b border-gray-200">
-                  <p className="text-sm font-medium text-gray-900">{user?.name}</p>
-                  <p className="text-xs text-gray-500">{user?.email}</p>
-                  {user?.roles && user.roles[0] && (
-                    <p className="text-xs text-blue-600 mt-1">{user.roles[0].name}</p>
-                  )}
-                </div>
-
-                <button
-                  onClick={() => {
-                    setDropdownOpen(false)
-                    navigate('/configuracion')
-                  }}
-                  className="w-full flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
-                >
-                  <Settings className="w-4 h-4" />
-                  Configuración
-                </button>
-
-                <button
-                  onClick={handleLogout}
-                  className="w-full flex items-center gap-3 px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors"
-                >
-                  <LogOut className="w-4 h-4" />
-                  Cerrar Sesión
-                </button>
-              </div>
-            )}
+          <div className="ms-3 d-none d-md-block">
+            <h5 className="mb-0 fw-bold">Panel Administrativo</h5>
+            <small className="text-primary fw-medium">
+              {formattedDateTime}
+            </small>
           </div>
         </div>
-      </div>
-    </header>
-  )
-}
 
-export default Header
+        {/* DERECHA: Acciones */}
+        <CHeaderNav className="align-items-center">
+          {/* Buscador Estilizado */}
+
+          <div
+            className="d-none d-lg-flex position-relative me-3"
+            style={{ width: "220px" }}
+          >
+            <CIcon
+              icon={cilSearch}
+              className="position-absolute text-body-secondary" // Cambiado de text-muted
+              style={{
+                top: "50%",
+                left: "12px",
+                transform: "translateY(-50%)",
+                zIndex: 4,
+              }}
+            />
+            <CFormInput
+              type="search"
+              placeholder="Buscar..."
+              // CAMBIO CLAVE: Usa bg-body-tertiary o borra bg-light
+              className="ps-5 rounded-pill border-0 bg-body-tertiary text-body"
+              style={{ boxShadow: "none" }}
+            />
+          </div>
+
+          {/* Botón Acción Rápida */}
+          <CButton
+            color="primary"
+            className="rounded-pill px-3 me-3 d-none d-sm-flex align-items-center shadow-sm"
+            size="sm"
+            onClick={() => navigate("/admin/preinscripciones/nueva")}
+          >
+            <span className="fw-semibold">+ Nueva Preinscripción</span>
+          </CButton>
+
+          {/* Notificaciones con Punto de Luz */}
+          <CNavItem className="me-2">
+            <CNavLink className="position-relative p-2">
+              <CIcon icon={cilBell} size="lg" className="text-dark-emphasis" />
+              {pendientes > 0 && (
+                <CBadge
+                  color="danger"
+                  shape="rounded-pill"
+                  className="position-absolute translate-middle-y border border-2 border-white"
+                  style={{ top: "10px", right: "-5px" }}
+                >
+                  {pendientes}
+                </CBadge>
+              )}
+            </CNavLink>
+          </CNavItem>
+
+          {/* Divisor Visual */}
+          <div
+            className="vr mx-2 text-muted opacity-25"
+            style={{ height: "30px" }}
+          ></div>
+
+          {/* Selector de Tema Moderno */}
+          <CDropdown variant="nav-item" className="mx-1">
+            <CDropdownToggle
+              caret={false}
+              className="p-2 border-0 bg-transparent"
+            >
+              {theme === "dark" && (
+                <CIcon icon={cilMoon} className="text-info" size="lg" />
+              )}
+              {theme === "light" && (
+                <CIcon icon={cilSun} className="text-warning" size="lg" />
+              )}
+              {theme === "auto" && (
+                <CIcon icon={cilContrast} className="text-primary" size="lg" />
+              )}
+            </CDropdownToggle>
+            <CDropdownMenu className="shadow-lg border-0 rounded-3 mt-2">
+              <CDropdownItem
+                onClick={() => setTheme("light")}
+                className="d-flex align-items-center py-2"
+              >
+                <CIcon icon={cilSun} className="me-3 text-warning" /> Modo Claro
+              </CDropdownItem>
+              <CDropdownItem
+                onClick={() => setTheme("dark")}
+                className="d-flex align-items-center py-2"
+              >
+                <CIcon icon={cilMoon} className="me-3 text-info" /> Modo Oscuro
+              </CDropdownItem>
+              <CDropdownItem
+                onClick={() => setTheme("auto")}
+                className="d-flex align-items-center py-2"
+              >
+                <CIcon icon={cilContrast} className="me-3 text-primary" />{" "}
+                Automático
+              </CDropdownItem>
+            </CDropdownMenu>
+          </CDropdown>
+
+          {/* Usuario con diseño de Card */}
+          <CDropdown variant="nav-item">
+            <CDropdownToggle
+              caret={false}
+              className="p-1 border-0 bg-transparent d-flex align-items-center"
+            >
+              <CAvatar
+                color="primary"
+                className="shadow-sm border border-2 border-primary border-opacity-25"
+                style={{ cursor: "pointer" }}
+              >
+                {user?.name?.charAt(0).toUpperCase()}
+              </CAvatar>
+
+              <div className="ms-2 d-none d-xl-block text-start">
+                <div className="fw-bold lh-1 small">{user?.name}</div>
+                <small className="text-muted" style={{ fontSize: "0.7rem" }}>
+                  Admin
+                </small>
+              </div>
+            </CDropdownToggle>
+
+            <CDropdownMenu
+              className="shadow-lg border-0 rounded-3 mt-2"
+              style={{ minWidth: "200px" }}
+            >
+              {/* Información del usuario */}
+              <div className="px-3 py-2 border-bottom mb-2">
+                <div className="fw-bold">{user?.name}</div>
+                <div className="small text-muted truncate">{user?.email}</div>
+              </div>
+              {/* Opciones */}
+              <CDropdownItem
+                onClick={() => navigate("/admin/perfil")}
+                className="py-2"
+              >
+                <CIcon icon={cilUser} className="me-2" /> Mi Perfil
+              </CDropdownItem>
+              <CDropdownItem className="py-2">
+                <CIcon icon={cilSettings} className="me-2" /> Ajustes
+              </CDropdownItem>
+              {/* 👇 AQUÍ VA EL CAMBIO CORRECTO */}
+              <CDropdownDivider /> {/* Separador en CoreUI v5 */}
+              <CDropdownItem
+                onClick={handleLogout}
+                className="text-danger py-2"
+              >
+                <CIcon icon={cilAccountLogout} className="me-2" /> Cerrar sesión
+              </CDropdownItem>
+            </CDropdownMenu>
+          </CDropdown>
+        </CHeaderNav>
+      </CContainer>
+    </CHeader>
+  );
+};
+
+export default Header;

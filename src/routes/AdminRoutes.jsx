@@ -7,6 +7,7 @@ import Dashboard from "@/admin/pages/Dashboard";
 import Preinscripciones from "@/admin/pages/Preinscripciones";
 import PreinscripcionView from "@/admin/pages/PreinscripcionView";
 import LoginAdmin from "@/admin/auth/LoginAdmin";
+import Reportes from "@/admin/pages/Reportes";
 
 const AdminRoutes = () => (
   <Routes>
@@ -19,8 +20,16 @@ const AdminRoutes = () => (
         <Route index element={<Dashboard />} />
         <Route path="preinscripciones" element={<Preinscripciones />} />
         <Route path="preinscripciones/:id" element={<PreinscripcionView />} />
+        <Route path="reportes" element={<Reportes />} />
       </Route>
     </Route>
+
+    {/* <Route element={<AdminLayout />}>
+      <Route index element={<Dashboard />} />
+      <Route path="preinscripciones" element={<Preinscripciones />} />
+      <Route path="preinscripciones/:id" element={<PreinscripcionView />} />
+      <Route path="reportes" element={<Reportes />} />
+    </Route> */}
 
     {/* 404 admin */}
     <Route path="*" element={<Navigate to="/admin" replace />} />

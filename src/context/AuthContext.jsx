@@ -1,5 +1,4 @@
 import { createContext, useEffect, useState } from "react";
-import { jwtDecode } from "jwt-decode";
 import api from "@/services/api";
 
 export const AuthContext = createContext(null);
@@ -8,45 +7,37 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  const logout = () => {
+    localStorage.removeItem("admin_token");
+    setUser(null);
+  };
+
+  const login = (userData, token) => {
+    localStorage.setItem("admin_token", token);
+    setUser(userData);
+  };
+
   useEffect(() => {
     const token = localStorage.getItem("admin_token");
 
-    if (token) {
-      try {
-        setUser(jwtDecode(token));
-      } catch {
-        localStorage.removeItem("admin_token");
-      }
+    if (!token) {
+      setLoading(false);
+      return;
     }
 
-    const validate = async () => {
+    const validateSession = async () => {
       try {
-        const { data } = await api.get("/me");
+        const { data } = await api.get("/admin/me");
         setUser(data.user);
-      } catch {
+      } catch (error) {
         logout();
       } finally {
         setLoading(false);
       }
     };
 
-    if (token) validate();
-    else setLoading(false);
+    validateSession();
   }, []);
-
-  // const login = (token) => {
-  //   localStorage.setItem("admin_token", token);
-  //   setUser(jwtDecode(token));
-  // };
-  const login = (userData, token) => {
-    localStorage.setItem("admin_token", token);
-    setUser(userData);
-  };
-
-  const logout = () => {
-    localStorage.removeItem("admin_token");
-    setUser(null);
-  };
 
   return (
     <AuthContext.Provider

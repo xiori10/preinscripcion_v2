@@ -203,21 +203,44 @@ export const consultarParaModificar = (dni, codigoSeguridad) => {
 //   return apiClient.put(`/preinscripciones/${dni}`, payload);
 // };
 
-  const limpiarPayload = (data) =>
-    Object.fromEntries(
-      Object.entries(data).filter(
-        ([, value]) => value !== "" && value !== null && value !== undefined
-      )
-    );
+  // const limpiarPayload = (data) =>
+  //   Object.fromEntries(
+  //     Object.entries(data).filter(
+  //       ([, value]) => value !== "" && value !== null && value !== undefined
+  //     )
+  //   );
 
-  export const modificarPreinscripcion = (dni, codigoSeguridad, formData) => {
-    const payload = {
-      codigo_seguridad: codigoSeguridad,
-      ...limpiarPayload(formData),
-    };
+  // export const modificarPreinscripcion = (dni, codigoSeguridad, formData) => {
+  //   const payload = {
+  //     codigo_seguridad: codigoSeguridad,
+  //     ...limpiarPayload(formData),
+  //   };
 
-    return apiClient.put(`/preinscripciones/${dni}`, payload);
+  //   return apiClient.put(`/preinscripciones/${dni}`, payload);
+  // };
+
+  // export const modificarPreinscripcion = (dni, codigoSeguridad, formData ) => {
+  // const payload = {
+  //   codigo_seguridad: codigoSeguridad,
+  //   ...formData,
+   
+    
+  // };
+
+//   return apiClient.put(`/preinscripciones/${dni}`, payload);
+// };
+
+export const modificarPreinscripcion = (dni, codigoSeguridad, formData) => {
+  const payload = {
+    codigo_seguridad: codigoSeguridad,
+    ...formData,
   };
+
+  return apiClient.put(`/preinscripciones/${dni}`, payload);
+};
+
+
+
 
 
 

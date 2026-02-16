@@ -134,6 +134,7 @@ const OptionsCards = () => {
   };
 
   const handleModificarDatos = async (e) => {
+    
     e.preventDefault();
     setError2('');
 
@@ -151,6 +152,7 @@ const OptionsCards = () => {
 
     try {
       const response = await consultarParaModificar(dniModificar, codigoSeguridad);
+      console.log("Respuesta backend:", response.data);
       navigate('/postulante/modificar', {
         state: {
           preinscripcion: response.data.data,
