@@ -230,6 +230,76 @@ const Dashboard = () => {
             </CCardBody>
           </CCard>
         </CCol>
+
+        {/* Usuarios */}
+        {/* <CCol xs="12" md="6">
+          <CCard>
+            <CCardBody>
+              <div className="text-center">
+                <h2 className="text-dark">
+                  <CIcon icon={cilUser} />
+                </h2>
+                <h3 className="text-dark">Usuarios</h3>
+                <div className="mt-4">
+                  <CButton
+                    color="primary"
+                    variant="outline"
+                    onClick={() => navigate("/admin/usuarios")}
+                  >
+                    Ver
+                  </CButton>
+                </div>
+              </div>
+            </CCardBody>
+          </CCard>
+        </CCol> */}
+
+
+
+        <CCol sm={6} xl={3}>
+          <CCard className="metric-card border-0 shadow-sm rounded-4 overflow-hidden bg-body-tertiary">
+            <div
+              className="metric-accent"
+              style={{
+                background:
+                  "linear-gradient(90deg, var(--cui-danger), #ff6b6b)",
+              }}
+            />
+
+            <CCardBody className="p-4">
+              <div className="d-flex justify-content-between align-items-center">
+                <div>
+                  <div className="text-medium-emphasis small text-uppercase fw-semibold">
+                    Usuarios
+                  </div>
+                  <h2 className="fw-bold mt-2 mb-0 text-yellow">
+                    {stats.usuarios}
+                  </h2>
+                  <small className="text-medium-emphasis">No admitidos</small>
+                </div>
+
+                <div
+                  className="metric-icon p-3 rounded-4"
+                  style={{
+                    background: "rgba(var(--cui-danger-rgb), 0.12)",
+                    color: "var(--cui-danger)",
+                  }}
+                >
+                  <CIcon icon={cilUser} size="xl" />
+                </div>
+              </div>
+            </CCardBody>
+          </CCard>
+        </CCol>
+
+
+
+
+
+
+
+
+
       </CRow>
     </div>
   );

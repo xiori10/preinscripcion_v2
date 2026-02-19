@@ -8,6 +8,8 @@ import Preinscripciones from "@/admin/pages/Preinscripciones";
 import PreinscripcionView from "@/admin/pages/PreinscripcionView";
 import LoginAdmin from "@/admin/auth/LoginAdmin";
 import Reportes from "@/admin/pages/Reportes";
+import UsuarioPage from "@/admin/pages/UsuariosPage";
+import SeguridadPage from "@/admin/pages/SeguridadPage";
 
 const AdminRoutes = () => (
   <Routes>
@@ -21,6 +23,8 @@ const AdminRoutes = () => (
         <Route path="preinscripciones" element={<Preinscripciones />} />
         <Route path="preinscripciones/:id" element={<PreinscripcionView />} />
         <Route path="reportes" element={<Reportes />} />
+        <Route path="usuarios" element={<UsuarioPage />} />
+        <Route path="seguridad" element={<SeguridadPage />} />
       </Route>
     </Route>
 
