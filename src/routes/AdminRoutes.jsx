@@ -10,6 +10,7 @@ import LoginAdmin from "@/admin/auth/LoginAdmin";
 import Reportes from "@/admin/pages/Reportes";
 import UsuarioPage from "@/admin/pages/UsuariosPage";
 import SeguridadPage from "@/admin/pages/SeguridadPage";
+import LogsPage from "@/admin/pages/LogsPage";
 
 const AdminRoutes = () => (
   <Routes>
@@ -25,6 +26,7 @@ const AdminRoutes = () => (
         <Route path="reportes" element={<Reportes />} />
         <Route path="usuarios" element={<UsuarioPage />} />
         <Route path="seguridad" element={<SeguridadPage />} />
+        <Route path="logs" element={<LogsPage />} />
       </Route>
     </Route>
 

@@ -1,7 +1,10 @@
-import { createContext, useEffect, useState } from "react";
+// import { createContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import api from "@/services/api";
 
-export const AuthContext = createContext(null);
+// export const AuthContext = createContext(null);
+// import { AuthContext } from "./AuthContext";
+import { AuthContext } from "./AuthContext";
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
@@ -30,6 +33,10 @@ export const AuthProvider = ({ children }) => {
         const { data } = await api.get("/admin/me");
         setUser(data.user);
       } catch (error) {
+        //  catch (error) {
+        //   logout();
+        // }
+        console.error(error);
         logout();
       } finally {
         setLoading(false);

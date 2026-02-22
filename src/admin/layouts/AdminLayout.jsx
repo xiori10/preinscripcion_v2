@@ -3,7 +3,8 @@ import { CContainer } from '@coreui/react'
 import { Outlet } from 'react-router-dom'
 import Sidebar from './Sidebar'
 import Header from './Header'
-import { ThemeProvider } from '../../context/ThemeContext'
+// import { ThemeProvider } from '../../context/ThemeContext'
+import { ThemeProvider } from '../../context/ThemeProvider'
 // import '@/admin/styles/admin.css';
 
 const AdminLayout = () => {

@@ -1,9 +1,12 @@
-  const PreinscripcionView = () => {
-    return (
-      <div className="p-6">
-        <h1>PreinscripcionView</h1>
-      </div>
-    )
-  }
-  
-  export default PreinscripcionView
+
+import PreinscripcionDetalle from "../features/preinscripciones/PreinscripcionDetalle";
+
+const PreinscripcionView = () => {
+  return (
+    <div className="p-4">
+      <PreinscripcionDetalle />
+    </div>
+  );
+};
+
+export default PreinscripcionView;

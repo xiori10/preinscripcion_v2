@@ -1,7 +1,9 @@
-import { createContext, useEffect, useState } from "react";
+// import { createContext, useEffect, useState } from "react";
 
-export const ThemeContext = createContext();
-
+// export const ThemeContext = createContext();
+import { useEffect, useState } from "react";
+// import { ThemeContext } from "./ThemeContext";
+import { ThemeContext } from "./ThemeContext";
 export const ThemeProvider = ({ children }) => {
   const [theme, setTheme] = useState(localStorage.getItem("theme") || "auto");
 
@@ -11,9 +13,11 @@ export const ThemeProvider = ({ children }) => {
     const applyTheme = () => {
       let colorMode = theme;
       if (theme === "auto") {
-        colorMode = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+        colorMode = window.matchMedia("(prefers-color-scheme: dark)").matches
+          ? "dark"
+          : "light";
       }
-      
+
       root.setAttribute("data-coreui-theme", colorMode);
       localStorage.setItem("theme", theme);
     };

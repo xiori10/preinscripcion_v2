@@ -47,18 +47,17 @@ const Preinscripciones = () => {
   const [carrera, setCarrera] = useState("todas");
 
   // 🔥 ACTUALIZAR ESTADO
-  // 🔥 ACTUALIZAR ESTADO
-  const actualizarEstado = async (id, nuevoEstado) => {
-    try {
-      await api.put(`/admin/preinscripciones/${id}/estado`, {
-        estado: nuevoEstado,
-      });
+  // const actualizarEstado = async (id, nuevoEstado) => {
+  //   try {
+  //     await api.put(`/admin/preinscripciones/${id}/estado`, {
+  //       estado: nuevoEstado,
+  //     });
 
-      fetchPreinscripciones(); // recargar lista
-    } catch (error) {
-      console.error("Error actualizando estado:", error);
-    }
-  };
+  //     fetchPreinscripciones(); 
+  //   } catch (error) {
+  //     console.error("Error actualizando estado:", error);
+  //   }
+  // };
 
   // 1. Obtener datos de la API
   const fetchPreinscripciones = useCallback(async () => {
@@ -366,7 +365,7 @@ const Preinscripciones = () => {
 
                     <CTableDataCell className="pe-4 text-end border-2">
                       <div className="d-flex justify-content-end gap-2">
-                        {item.estado?.toLowerCase() === "pendiente" && (
+                        {/* {item.estado?.toLowerCase() === "pendiente" && (
                           <>
                             <CButton
                               size="sm"
@@ -391,8 +390,9 @@ const Preinscripciones = () => {
                             >
                               Rechazar
                             </CButton>
+
                           </>
-                        )}
+                        )} */}
 
                         <CButton
                           size="sm"
@@ -405,12 +405,14 @@ const Preinscripciones = () => {
                         >
                           Ver
                         </CButton>
+                        
                       </div>
                     </CTableDataCell>
                   </CTableRow>
                 ))
               )}
             </CTableBody>
+            
           </CTable>
         </CCardBody>
       </CCard>

@@ -10,18 +10,44 @@ export const getDashboardStats = async () => {
 //   return data
 // }
 
+/**
+ * Obtener reportes / filtros generales (si lo usas en tablas)
+ */
+
 export const getReportes = async (filters = {}) => {
   const { data } = await api.get('/admin/reportes', { params: filters })
   return data
 }
 
-export const actualizarEstado = async (id, estado) => {
-  const { data } = await api.put(`/admin/preinscripciones/${id}/estado`, {
-    estado
-  });
+// export const actualizarEstado = async (id, estado) => {
+//   const { data } = await api.put(`/admin/preinscripciones/${id}/estado`, {
+//     estado
+//   });
+//   return data;
+// };
+
+/**
+ * Actualizar el estado de una preinscripción
+ * 🔹 Incluye motivo en caso de RECHAZADO
+ */
+export const actualizarEstado = async (id, estado, motivo = "") => {
+  const payload = { estado };
+
+  if (estado === "RECHAZADO") {
+    payload.motivo = motivo; // obligatorio si rechazas
+  }
+
+  const { data } = await api.put(`/admin/preinscripciones/${id}/estado`, payload);
   return data;
 };
 
+/**
+ * Obtener datos completos de una preinscripción (showAdmin)
+ */
+export const getPreinscripcionDetalle = async (id) => {
+  const { data } = await api.get(`/admin/preinscripciones/${id}`);
+  return data;
+};
 
 
 export const getUsuarios = async () => {
@@ -74,4 +100,16 @@ export const updateConfiguracion = async (payload) => {
   return data
 }
 
+// 🔹 Obtener logs con filtros y paginación
+export const getLogs = async (params = {}) => {
+  const { data } = await api.get("/admin/logs", {
+    params,
+  })
+  return data
+}
 
+// 🔹 Limpiar logs antiguos
+export const cleanLogs = async () => {
+  const { data } = await api.delete("/admin/logs/clean")
+  return data
+}
